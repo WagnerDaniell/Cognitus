@@ -15,7 +15,10 @@ export default function index({ navigation }) {
         title="Ir para Questions"
         onPress={() => navigation.navigate("Questions")} // Navega para a tela "Home"
       />
-      <StatusBar style="auto" />
+      <Button
+        title="Ir para Register"
+        onPress={() => navigation.navigate("Register")}
+      />
     </LinearGradient>
   );
 }

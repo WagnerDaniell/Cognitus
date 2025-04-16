@@ -3,12 +3,14 @@ import { createStackNavigator } from "react-navigation-stack";
 import IndexScreen from "../screens/index"; // Verifique o caminho
 import HomeScreen from "../screens/home";
 import QuestionScreen from "../screens/questions";
+import RegisterScreen from "../screens/register";
 
 const AppNavigator = createStackNavigator(
   {
     Index: IndexScreen,
     Home: HomeScreen,
     Questions: QuestionScreen,
+    Register: RegisterScreen,
   },
   {
     initialRouteName: "Index", // A tela inicial
