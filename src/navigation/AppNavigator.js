@@ -1,7 +1,6 @@
-import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import IndexScreen from "../screens/index";
+import IndexScreen from "../screens/index"; // Verifique o caminho
 import HomeScreen from "../screens/home";
 import QuestionScreen from "../screens/questions";
 
@@ -12,8 +11,8 @@ const AppNavigator = createStackNavigator(
     Questions: QuestionScreen,
   },
   {
-    initialRouteName: "Index", // Rota inicial se liga e, dps nós troca pra A main lá
-    headerMode: "none",
+    initialRouteName: "Index", // A tela inicial
+    headerMode: "none", // Desabilita o cabeçalho
   }
 );
 

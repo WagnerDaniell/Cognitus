@@ -1,22 +1,29 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { useState } from "react";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
 
-export default function App() {
+export default function App({ navigation }) {
   const [message, setMessage] = useState("");
 
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
       <View style={styles.topLeftView}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Ionicons name="close-outline" size={30} color="white" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.topCenterView}>
         <Text style={styles.textLast}>
           Revisando – <Text style={styles.highlight}>C#</Text>
         </Text>
       </View>
 
-      <View style={styles.topLeftView2}>
+      <View style={styles.topCenterView2}>
         <Text style={styles.SubTittle}>
           Questões <Text style={styles.NumberIn}>1</Text> de
           <Text style={styles.NumberOut}>10</Text>
@@ -67,22 +74,35 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+    zIndex: 1,
+  },
   topLeftView: {
     position: "absolute",
-    top: 45,
-    left: 5,
+    top: 15,
+    right: 315,
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-around",
     paddingHorizontal: 50,
   },
-  topLeftView2: {
+  topCenterView: {
     position: "absolute",
-    top: 80,
-    left: 5,
+    top: 65,
     padding: 10,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
+    paddingHorizontal: 50,
+  },
+  topCenterView2: {
+    position: "absolute",
+    top: 100,
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "center",
     paddingHorizontal: 50,
   },
   container: {
