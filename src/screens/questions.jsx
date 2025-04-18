@@ -1,72 +1,126 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
 
 export default function App({ navigation }) {
   const [message, setMessage] = useState("");
+  const [questAtual, setQuestAtual] = useState(0);
+  const [questions, setQuestions] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [corResposta, setCorResposta] = useState({
+    a: "#FFC400", 
+    b: "#FFC400", 
+    c: "#FFC400", 
+    d: "#FFC400"
+  });
+
+  // Sim o body ainda ta estatico e o token tbm kkk, tamo em teste né
+  const body = {
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTk2MzZlZS0zNjhlLTdkYTEtYTFiYS1hNmNlZTM2OWI4ZGIiLCJ1bmlxdWVfbmFtZSI6IndhZ25lciBkYW5pZWwiLCJuYmYiOjE3NDQ2NzgzMDMsImV4cCI6MTc0NDY4NTUwMywiaWF0IjoxNzQ0Njc4MzAzfQ.hHGEdZmI5QsaB8L_XHJClBO6b_6MTHs5ujXmjqBO2hY",
+    Message: "react",
+  };
+
+  useEffect(() => {
+    const requestQuestions = async () => {
+      try {
+        const response = await axios.post("http://192.168.1.6:5117/api/c/generate", body, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setQuestions(response.data);
+      } catch (error) {
+        setMessage(error);
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    requestQuestions();
+  }, []);
+
+  const questao = questions[questAtual];
+
+  const verificarResposta = (resposta) => {
+    if (resposta === questao.correta) {
+      setCorResposta({
+        a: "#FFC400",
+        b: "#FFC400",
+        c: "#FFC400",
+        d: "#FFC400",
+      });
+      setQuestAtual(questAtual + 1);
+    } else {
+      setCorResposta((prevState) => ({
+        ...prevState,
+        [resposta]: "#D10000",
+      }));
+    }
+  };
+
+  //faz uma parada de loading melhor pfv hein kkkkk
+  if (carregando === true) {
+    return <View><Text>Carregando...</Text></View>;
+  }
 
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
       <View style={styles.topLeftView}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="close-outline" size={30} color="white" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.topCenterView}>
         <Text style={styles.textLast}>
-          Revisando – <Text style={styles.highlight}>C#</Text>
+          Revisando – <Text style={styles.highlight}>{questao.tema}</Text>
         </Text>
       </View>
 
       <View style={styles.topCenterView2}>
         <Text style={styles.SubTittle}>
-          Questões <Text style={styles.NumberIn}>1</Text> de
-          <Text style={styles.NumberOut}>10</Text>
+          Questões <Text style={styles.NumberIn}>{questAtual}</Text> de
+          <Text style={styles.NumberOut}> 10</Text>
         </Text>
       </View>
 
       <View style={styles.MainView}>
-        <Text style={styles.textMain}>
-          Qual é a palavra-chave usada para definir uma classe em C#?
-        </Text>
+        <Text style={styles.textMain}>{questao.pergunta}</Text>
       </View>
 
       <View style={styles.inputWrapper}>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Botão A clicado!")}
+          style={[styles.button, { backgroundColor: corResposta.a }]}
+          onPress={() => verificarResposta("a")}
           accessibilityLabel="buttonA"
         >
-          <Text style={styles.buttonText}>A - struct</Text>
+          <Text style={styles.buttonText}>A - {questao.alternativas.a}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Botão B clicado!")}
+          style={[styles.button, { backgroundColor: corResposta.b }]}
+          onPress={() => verificarResposta("b")}
           accessibilityLabel="buttonB"
         >
-          <Text style={styles.buttonText}>B - struct</Text>
+          <Text style={styles.buttonText}>B - {questao.alternativas.b}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Botão C clicado!")}
+          style={[styles.button, { backgroundColor: corResposta.c }]}
+          onPress={() => verificarResposta("c")}
           accessibilityLabel="buttonC"
         >
-          <Text style={styles.buttonText}>C - struct</Text>
+          <Text style={styles.buttonText}>C - {questao.alternativas.c}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Botão D clicado!")}
+          style={[styles.button, { backgroundColor: corResposta.d }]}
+          onPress={() => verificarResposta("d")}
           accessibilityLabel="buttonD"
         >
-          <Text style={styles.buttonText}>D - struct</Text>
+          <Text style={styles.buttonText}>D - {questao.alternativas.d}</Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>
@@ -151,7 +205,6 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#FFC400",
     height: "100%",
     justifyContent: "center",
     alignItems: "flex-start",
