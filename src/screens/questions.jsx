@@ -3,11 +3,15 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
+import Loading from "../components/loading";
+import ErrorGenerate from "../components/errorGenerate";
+import EndQuest from "../components/endQuest";
 
 export default function App({ navigation }) {
   const [message, setMessage] = useState("");
   const [questAtual, setQuestAtual] = useState(0);
   const [questions, setQuestions] = useState([]);
+  const [error, setError] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [corResposta, setCorResposta] = useState({
     a: "#FFC400", 
@@ -19,7 +23,7 @@ export default function App({ navigation }) {
   // Sim o body ainda ta estatico e o token tbm kkk, tamo em teste né
   const body = {
     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTk2MzZlZS0zNjhlLTdkYTEtYTFiYS1hNmNlZTM2OWI4ZGIiLCJ1bmlxdWVfbmFtZSI6IndhZ25lciBkYW5pZWwiLCJuYmYiOjE3NDQ2NzgzMDMsImV4cCI6MTc0NDY4NTUwMywiaWF0IjoxNzQ0Njc4MzAzfQ.hHGEdZmI5QsaB8L_XHJClBO6b_6MTHs5ujXmjqBO2hY",
-    Message: "react",
+    Message: "matematica basica para 3 ano",
   };
 
   useEffect(() => {
@@ -32,7 +36,8 @@ export default function App({ navigation }) {
         });
         setQuestions(response.data);
       } catch (error) {
-        setMessage(error);
+        console.log(error);
+        setError(error)
       } finally {
         setCarregando(false);
       }
@@ -40,6 +45,10 @@ export default function App({ navigation }) {
 
     requestQuestions();
   }, []);
+
+  if (error !== null){
+    return <ErrorGenerate/>
+  }
 
   const questao = questions[questAtual];
 
@@ -51,8 +60,13 @@ export default function App({ navigation }) {
         c: "#FFC400",
         d: "#FFC400",
       });
-      setQuestAtual(questAtual + 1);
-    } else {
+
+      if (questAtual + 1 >= questions.length) {
+        navigation.navigate("EndQuest")
+      } else {
+        setQuestAtual(questAtual + 1);
+      }
+    }else {
       setCorResposta((prevState) => ({
         ...prevState,
         [resposta]: "#D10000",
@@ -60,9 +74,8 @@ export default function App({ navigation }) {
     }
   };
 
-  //faz uma parada de loading melhor pfv hein kkkkk
   if (carregando === true) {
-    return <View><Text>Carregando...</Text></View>;
+    return <Loading/>;
   }
 
   return (

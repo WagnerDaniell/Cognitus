@@ -2,18 +2,18 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, Button } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function index({ navigation }) {
+export default function Index({ navigation }) {
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
       <Text style={styles.textMain}>Tela inicial!</Text>
 
       <Button
         title="Ir para Home"
-        onPress={() => navigation.navigate("Home")} // Navega para a tela "Home"
+        onPress={() => navigation.navigate("Home")}
       />
       <Button
         title="Ir para Questions"
-        onPress={() => navigation.navigate("Questions")} // Navega para a tela "Home"
+        onPress={() => navigation.navigate("Questions")} 
       />
       <Button
         title="Ir para Register"
