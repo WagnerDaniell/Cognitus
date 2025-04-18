@@ -14,30 +14,35 @@ export default function App({ navigation }) {
   const [error, setError] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [corResposta, setCorResposta] = useState({
-    a: "#FFC400", 
-    b: "#FFC400", 
-    c: "#FFC400", 
-    d: "#FFC400"
+    a: "#FFC400",
+    b: "#FFC400",
+    c: "#FFC400",
+    d: "#FFC400",
   });
 
   // Sim o body ainda ta estatico e o token tbm kkk, tamo em teste né
   const body = {
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTk2MzZlZS0zNjhlLTdkYTEtYTFiYS1hNmNlZTM2OWI4ZGIiLCJ1bmlxdWVfbmFtZSI6IndhZ25lciBkYW5pZWwiLCJuYmYiOjE3NDQ2NzgzMDMsImV4cCI6MTc0NDY4NTUwMywiaWF0IjoxNzQ0Njc4MzAzfQ.hHGEdZmI5QsaB8L_XHJClBO6b_6MTHs5ujXmjqBO2hY",
+    token:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTk2MzZlZS0zNjhlLTdkYTEtYTFiYS1hNmNlZTM2OWI4ZGIiLCJ1bmlxdWVfbmFtZSI6IndhZ25lciBkYW5pZWwiLCJuYmYiOjE3NDQ2NzgzMDMsImV4cCI6MTc0NDY4NTUwMywiaWF0IjoxNzQ0Njc4MzAzfQ.hHGEdZmI5QsaB8L_XHJClBO6b_6MTHs5ujXmjqBO2hY",
     Message: "matematica basica para 3 ano",
   };
 
   useEffect(() => {
     const requestQuestions = async () => {
       try {
-        const response = await axios.post("http://192.168.1.6:5117/api/c/generate", body, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axios.post(
+          "http://192.168.1.6:5117/api/c/generate",
+          body,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         setQuestions(response.data);
       } catch (error) {
         console.log(error);
-        setError(error)
+        setError(error);
       } finally {
         setCarregando(false);
       }
@@ -46,8 +51,8 @@ export default function App({ navigation }) {
     requestQuestions();
   }, []);
 
-  if (error !== null){
-    return <ErrorGenerate/>
+  if (error !== null) {
+    return <ErrorGenerate />;
   }
 
   const questao = questions[questAtual];
@@ -62,11 +67,11 @@ export default function App({ navigation }) {
       });
 
       if (questAtual + 1 >= questions.length) {
-        navigation.navigate("EndQuest")
+        navigation.navigate("EndQuest");
       } else {
         setQuestAtual(questAtual + 1);
       }
-    }else {
+    } else {
       setCorResposta((prevState) => ({
         ...prevState,
         [resposta]: "#D10000",
@@ -75,13 +80,16 @@ export default function App({ navigation }) {
   };
 
   if (carregando === true) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
       <View style={styles.topLeftView}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
           <Ionicons name="close-outline" size={30} color="white" />
         </TouchableOpacity>
       </View>
