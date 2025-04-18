@@ -20,11 +20,8 @@ export default function App({ navigation }) {
     d: "#FFC400",
   });
 
-  // Sim o body ainda ta estatico e o token tbm kkk, tamo em teste né
   const body = {
-    token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTk2MzZlZS0zNjhlLTdkYTEtYTFiYS1hNmNlZTM2OWI4ZGIiLCJ1bmlxdWVfbmFtZSI6IndhZ25lciBkYW5pZWwiLCJuYmYiOjE3NDQ2NzgzMDMsImV4cCI6MTc0NDY4NTUwMywiaWF0IjoxNzQ0Njc4MzAzfQ.hHGEdZmI5QsaB8L_XHJClBO6b_6MTHs5ujXmjqBO2hY",
-    Message: "matematica basica para 3 ano",
+    Message: "sistema digestorio para 3 ano"
   };
 
   useEffect(() => {
@@ -36,6 +33,8 @@ export default function App({ navigation }) {
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer `
+              //Aqui em cima é onde passa o token
             },
           }
         );
