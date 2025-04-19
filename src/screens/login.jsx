@@ -10,17 +10,13 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function Register({ navigation }) {
-  const [nome, setNome] = useState("");
+export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [escolaridade, setEscolaridade] = useState("");
 
   const cadastro = () => {
-    alert(nome);
     alert(email);
     alert(password);
-    alert(escolaridade);
     //adicionar a lógica para enviar os dados para o backend wagner bora trabalhar bora
   };
 
@@ -34,21 +30,10 @@ export default function Register({ navigation }) {
       </View>
 
       <View style={styles.header}>
-        <Text style={styles.title}>Crie sua Conta</Text>
+        <Text style={styles.title}>Faça Login</Text>
       </View>
 
       <View style={styles.form}>
-        <View style={styles.inputWrapper}>
-          <Ionicons name="person" size={20} style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Nome"
-            placeholderTextColor="#fff"
-            onChangeText={(text) => setNome(text)}
-            value={nome}
-          />
-        </View>
-
         <View style={styles.inputWrapper}>
           <Ionicons name="mail" size={20} style={styles.icon} />
           <TextInput
@@ -72,18 +57,8 @@ export default function Register({ navigation }) {
           />
         </View>
 
-        <View style={styles.inputWrapper}>
-          <Ionicons name="school" size={20} style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Escolaridade"
-            placeholderTextColor="#fff"
-            onChangeText={(text) => setEscolaridade(text)}
-            value={escolaridade}
-          />
-        </View>
         <TouchableOpacity onPress={() => cadastro()} style={styles.button}>
-          <Text style={styles.buttonText}>CRIAR CONTA</Text>
+          <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
 
         <View style={styles.separatorContainer}>
@@ -130,7 +105,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
   },
   header: {
-    marginTop: 170,
+    marginTop: 80,
     marginBottom: 30,
   },
   title: {
@@ -172,7 +147,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 30,
   },
   buttonText: {
     color: "#fff",
@@ -183,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 30,
     marginBottom: 10,
     width: "100%",
   },
@@ -206,7 +181,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     width: "100%",
     justifyContent: "flex-start",
-    marginTop: 10,
+    marginTop: 30,
     position: "relative",
   },
 
@@ -229,7 +204,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
     position: "absolute",
     right: 140,
-    bottom: 10,
+    bottom: 90,
     flexDirection: "row",
   },
   LoginText: {

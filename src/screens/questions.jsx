@@ -7,7 +7,7 @@ import Loading from "../components/loading";
 import ErrorGenerate from "../components/errorGenerate";
 import EndQuest from "../components/endQuest";
 
-export default function App({ navigation }) {
+export default function Questions({ navigation }) {
   const [message, setMessage] = useState("");
   const [questAtual, setQuestAtual] = useState(0);
   const [questions, setQuestions] = useState([]);
@@ -21,7 +21,7 @@ export default function App({ navigation }) {
   });
 
   const body = {
-    Message: "sistema digestorio para 3 ano"
+    Message: "sistema digestorio para 3 ano",
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function App({ navigation }) {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer `
+              Authorization: `Bearer `,
               //Aqui em cima é onde passa o token
             },
           }

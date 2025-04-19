@@ -13,11 +13,19 @@ export default function Index({ navigation }) {
       />
       <Button
         title="Ir para Questions"
-        onPress={() => navigation.navigate("Questions")} 
+        onPress={() => navigation.navigate("Questions")}
       />
       <Button
         title="Ir para Register"
         onPress={() => navigation.navigate("Register")}
+      />
+      <Button
+        title="Ir para Login"
+        onPress={() => navigation.navigate("Login")}
+      />
+      <Button
+        title="Ir para Main"
+        onPress={() => navigation.navigate("Main")}
       />
     </LinearGradient>
   );
