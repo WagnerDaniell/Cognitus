@@ -75,8 +75,8 @@ export default function Login({ navigation }) {
         </TouchableOpacity>
       </View>
       <View style={styles.LoginView}>
-        <Text style={styles.LoginText}>Já tem uma conta?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Index")}>
+        <Text style={styles.LoginText}>Ainda não tem uma conta?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
           <Text style={styles.LoginText2}> Entrar</Text>
         </TouchableOpacity>
       </View>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingHorizontal: 50,
     position: "absolute",
-    right: 140,
+    right: 68,
     bottom: 90,
     flexDirection: "row",
   },
