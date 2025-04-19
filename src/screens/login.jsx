@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,16 +9,54 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import Loading from "../components/loading"
+import * as SecureStore from 'expo-secure-store';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const [error, setError] = useState(false);
 
-  const cadastro = () => {
-    alert(email);
-    alert(password);
-    //adicionar a lógica para enviar os dados para o backend wagner bora trabalhar bora
-  };
+  useEffect(() => {
+    if (error === true) {
+      navigation.navigate("ErrorLogin");
+    }
+  }, [error]);
+  
+
+  const body = {
+    Email : email,
+    Password : password
+  }
+
+  const cadastro = async () => {
+    try {
+      setCarregando(true);
+      const response = await axios.post("http://192.168.1.6:5117/api/c/login", body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (response.data.token) {
+        await SecureStore.setItemAsync('token', response.data.token);
+        navigation.navigate("Home");
+      } else {
+        setError(true);
+      }
+    } catch (error) {
+      setError(true);
+      console.error("Erro ao logar:", error);
+    } finally {
+      setCarregando(false);
+    }
+  };  
+
+  if (carregando === true){
+    return <Loading/>
+  }
 
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
@@ -57,7 +95,10 @@ export default function Login({ navigation }) {
           />
         </View>
 
-        <TouchableOpacity onPress={() => cadastro()} style={styles.button}>
+        <TouchableOpacity onPress={() => {
+          cadastro();
+        }} 
+        style={styles.button}>
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
 
@@ -77,7 +118,7 @@ export default function Login({ navigation }) {
       <View style={styles.LoginView}>
         <Text style={styles.LoginText}>Ainda não tem uma conta?</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text style={styles.LoginText2}> Entrar</Text>
+          <Text style={styles.LoginText2}> Cadastro</Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>
@@ -203,7 +244,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingHorizontal: 50,
     position: "absolute",
-    right: 68,
+    right: 46,
     bottom: 90,
     flexDirection: "row",
   },

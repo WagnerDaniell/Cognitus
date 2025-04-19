@@ -8,6 +8,7 @@ import RegisterScreen from "../screens/register";
 import EndQuest from "../components/endQuest";
 import LoginScreen from "../screens/login";
 import MainScreen from "../screens/main";
+import ErrorLogin from "../components/errorLogin";
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const AppNavigator = () => (
       <Stack.Screen name="Questions" component={QuestionScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="EndQuest" component={EndQuest} />
+      <Stack.Screen name="ErrorLogin" component={ErrorLogin} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Main" component={MainScreen} />
     </Stack.Navigator>

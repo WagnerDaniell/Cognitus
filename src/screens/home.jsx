@@ -1,11 +1,24 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import * as SecureStore from 'expo-secure-store';
 
-export default function App() {
+export default function App({navigation}) {
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const verificarToken = async() => {
+      const token = await SecureStore.getItemAsync('token');
+      
+      if (token == null){
+        navigation.navigate("Login")
+      }
+    };
+  
+    verificarToken()
+  }, [])
 
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
