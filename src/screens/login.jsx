@@ -17,13 +17,6 @@ export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [carregando, setCarregando] = useState(false);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    if (error === true) {
-      navigation.navigate("ErrorLogin");
-    }
-  }, [error]);
   
 
   const body = {
@@ -34,21 +27,19 @@ export default function Login({ navigation }) {
   const cadastro = async () => {
     try {
       setCarregando(true);
-      const response = await axios.post("http://192.168.1.6:5117/api/c/login", body, {
+      const response = await axios.post("http://192.168.1.64:5117/api/c/login", body, {
         headers: {
           "Content-Type": "application/json",
         },
       });
   
-      if (response.data.token) {
-        await SecureStore.setItemAsync('token', response.data.token);
-        navigation.navigate("Home");
-      } else {
-        setError(true);
-      }
+      await SecureStore.setItemAsync('token', response.data.token);
+      navigation.navigate("Home");
+      console.log(response.data.message)
+
     } catch (error) {
-      setError(true);
-      console.error("Erro ao logar:", error);
+      navigation.navigate("ErrorLogin", {message:error.response?.data?.message});
+      console.log(error);
     } finally {
       setCarregando(false);
     }

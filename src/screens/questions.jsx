@@ -5,10 +5,10 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import Loading from "../components/loading";
 import ErrorGenerate from "../components/errorGenerate";
-import EndQuest from "../components/endQuest";
+import * as SecureStore from 'expo-secure-store';
+import { useRoute } from '@react-navigation/native';
 
 export default function Questions({ navigation }) {
-  const [message, setMessage] = useState("");
   const [questAtual, setQuestAtual] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState(null);
@@ -20,21 +20,30 @@ export default function Questions({ navigation }) {
     d: "#FFC400",
   });
 
+  const route = useRoute();
+  const tema = route.params.tema;
+
   const body = {
-    Message: "sistema digestorio para 3 ano",
+    Message: `${tema}`,
   };
 
   useEffect(() => {
     const requestQuestions = async () => {
       try {
+
+        const token = await SecureStore.getItemAsync('token');
+
+        if (token == null){
+          navigation.navigate("Login")
+        }
+
         const response = await axios.post(
-          "http://192.168.1.6:5117/api/c/generate",
+          "http://192.168.1.64:5117/api/c/generate",
           body,
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer `,
-              //Aqui em cima é onde passa o token
+              Authorization: `Bearer ${token}`,
             },
           }
         );

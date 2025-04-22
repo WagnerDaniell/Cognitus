@@ -2,22 +2,19 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { View,StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
-import { useRoute } from '@react-navigation/native';
 
-const ErrorLogin= () => {
+const ErrorHome= () => {
     const navigation = useNavigation()
-    const route = useRoute()
-    const { message } = route.params || {}
 
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
-        <Text style={styles.textMain}>Error ao fazer login, {message || "Algo deu errado."}</Text>
+        <Text style={styles.textMain}>Algo deu errado. Tente novamente mais tarde.</Text>
          <View style={styles.inputWrapper}>
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => navigation.navigate("Login")}
                 accessibilityLabel="button">
-                <Text style={styles.buttonText}>Tentar Novamente</Text>
+                <Text style={styles.buttonText}>Voltar</Text>
             </TouchableOpacity>
          </View>
         
@@ -52,7 +49,7 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 16,
         fontWeight: "bold",
-        marginLeft: "23%"
+        marginLeft: "37%"
       },
 
       textMain: {
@@ -69,4 +66,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default ErrorLogin;
+export default ErrorHome;

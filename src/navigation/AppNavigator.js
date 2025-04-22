@@ -9,13 +9,14 @@ import EndQuest from "../components/endQuest";
 import LoginScreen from "../screens/login";
 import MainScreen from "../screens/main";
 import ErrorLogin from "../components/errorLogin";
+import ErrorHome from "../components/errorHome";
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="Index"
+      initialRouteName="Main"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Index" component={IndexScreen} />
@@ -24,6 +25,7 @@ const AppNavigator = () => (
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="EndQuest" component={EndQuest} />
       <Stack.Screen name="ErrorLogin" component={ErrorLogin} />
+      <Stack.Screen name="ErrorHome" component={ErrorHome} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Main" component={MainScreen} />
     </Stack.Navigator>

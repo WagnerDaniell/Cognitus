@@ -4,21 +4,56 @@ import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import * as SecureStore from 'expo-secure-store';
+import axios from "axios";
+import Loading from "../components/loading";
 
 export default function App({navigation}) {
-  const [message, setMessage] = useState("");
+  const [assunto, setAssunto] = useState();
+  const [name, setName] = useState("");
+  const [screenErro, setScreenErro] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const verificarToken = async() => {
+    const home = async() => {
       const token = await SecureStore.getItemAsync('token');
       
       if (token == null){
         navigation.navigate("Login")
       }
+
+      try{
+        const response = await axios.get(
+          "http://192.168.1.64:5117/api/c/home",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setName(response.data.name);
+      }catch(error){
+        setScreenErro(true);
+      }finally{
+        setLoading(false);
+      }
+      
     };
   
-    verificarToken()
+    home()
   }, [])
+
+  if(loading == true){
+    return <Loading/>
+  }
+
+  if (screenErro == true){
+    navigation.navigate("ErrorHome");
+  }
+
+  const enviarAssunto = () => {
+    navigation.navigate("Questions",{tema : assunto})
+  };
 
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
@@ -29,7 +64,7 @@ export default function App({navigation}) {
           color="#FFFFFF"
           style={styles.iconProfile}
         />
-        <Text style={styles.textLast}>Olá, Wagner Daniel</Text>
+        <Text style={styles.textLast}>Olá, {name}</Text>
       </View>
 
       <Text style={styles.textMain}>O que você que revisar hoje?</Text>
@@ -44,8 +79,9 @@ export default function App({navigation}) {
           style={styles.input}
           placeholder="Digite o assunto..."
           placeholderTextColor="#0F2851"
-          value={message}
-          onChangeText={setMessage}
+          value={assunto}
+          onChangeText={setAssunto}
+          onSubmitEditing={enviarAssunto}
         />
       </View>
 

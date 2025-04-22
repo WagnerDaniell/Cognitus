@@ -9,20 +9,52 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { Alert } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import axios from "axios"
+import Loading from "../components/loading";
+
 
 export default function Register({ navigation }) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [escolaridade, setEscolaridade] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const cadastro = () => {
-    alert(nome);
-    alert(email);
-    alert(password);
-    alert(escolaridade);
-    //adicionar a lógica para enviar os dados para o backend wagner bora trabalhar bora
+  const body = {
+    Name : nome,
+    Email : email,
+    Password: password,
+    Schooling : escolaridade
   };
+
+  const cadastro = async () => {
+    try{
+      setLoading(true);
+      const response = await axios.post(
+        "http://192.168.1.64:5117/api/c/register", body, 
+        {
+          headers:{
+            "Content-Type" : "application/json"
+          }
+        }
+      );
+      
+      await SecureStore.setItemAsync('token', response.data.token)
+      navigation.navigate("Home")
+
+    }catch(error){
+      Alert.alert("Error: " + error.response?.data?.message);
+    }
+    finally{
+      setLoading(false);
+    }
+  };
+
+  if (loading == true){
+    return <Loading/>
+  }
 
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
