@@ -33,7 +33,7 @@ export default function Register({ navigation }) {
     try{
       setLoading(true);
       const response = await axios.post(
-        "http://192.168.1.64:5117/api/c/register", body, 
+        "https://cognitusbackend.onrender.com/api/c/register", body, 
         {
           headers:{
             "Content-Type" : "application/json"

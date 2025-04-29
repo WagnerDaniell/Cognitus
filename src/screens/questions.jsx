@@ -38,7 +38,7 @@ export default function Questions({ navigation }) {
         }
 
         const response = await axios.post(
-          "http://192.168.1.64:5117/api/c/generate",
+          "https://cognitusbackend.onrender.com/api/c/generate",
           body,
           {
             headers: {

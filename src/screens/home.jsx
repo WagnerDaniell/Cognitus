@@ -23,7 +23,7 @@ export default function App({navigation}) {
 
       try{
         const response = await axios.get(
-          "http://192.168.1.64:5117/api/c/home",
+          "https://cognitusbackend.onrender.com/api/c/home",
           {
             headers: {
               "Content-Type": "application/json",

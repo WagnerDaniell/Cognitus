@@ -27,7 +27,7 @@ export default function Login({ navigation }) {
   const cadastro = async () => {
     try {
       setCarregando(true);
-      const response = await axios.post("http://192.168.1.64:5117/api/c/login", body, {
+      const response = await axios.post("https://cognitusbackend.onrender.com/api/c/login", body, {
         headers: {
           "Content-Type": "application/json",
         },
