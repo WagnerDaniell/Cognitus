@@ -5,8 +5,8 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import Loading from "../components/loading";
 import ErrorGenerate from "../components/errorGenerate";
-import * as SecureStore from 'expo-secure-store';
-import { useRoute } from '@react-navigation/native';
+import * as SecureStore from "expo-secure-store";
+import { useRoute } from "@react-navigation/native";
 
 export default function Questions({ navigation }) {
   const [questAtual, setQuestAtual] = useState(0);
@@ -30,11 +30,10 @@ export default function Questions({ navigation }) {
   useEffect(() => {
     const requestQuestions = async () => {
       try {
+        const token = await SecureStore.getItemAsync("token");
 
-        const token = await SecureStore.getItemAsync('token');
-
-        if (token == null){
-          navigation.navigate("Login")
+        if (token == null) {
+          navigation.navigate("Login");
         }
 
         const response = await axios.post(

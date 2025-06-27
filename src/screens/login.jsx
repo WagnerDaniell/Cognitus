@@ -10,43 +10,50 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
-import Loading from "../components/loading"
-import * as SecureStore from 'expo-secure-store';
+import Loading from "../components/loading";
+import * as SecureStore from "expo-secure-store";
+import { Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [carregando, setCarregando] = useState(false);
-  
 
   const body = {
-    Email : email,
-    Password : password
-  }
+    Email: email,
+    Password: password,
+  };
 
   const cadastro = async () => {
     try {
       setCarregando(true);
-      const response = await axios.post("https://cognitusbackend.onrender.com/api/c/login", body, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      await SecureStore.setItemAsync('token', response.data.token);
-      navigation.navigate("Home");
-      console.log(response.data.message)
+      const response = await axios.post(
+        "https://cognitusbackend.onrender.com/api/c/login",
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
+      await SecureStore.setItemAsync("token", response.data.token);
+      navigation.navigate("Home");
+      console.log(response.data.message);
     } catch (error) {
-      navigation.navigate("ErrorLogin", {message:error.response?.data?.message});
+      navigation.navigate("ErrorLogin", {
+        message: error.response?.data?.message,
+      });
       console.log(error);
     } finally {
       setCarregando(false);
     }
-  };  
+  };
 
-  if (carregando === true){
-    return <Loading/>
+  if (carregando === true) {
+    return <Loading />;
   }
 
   return (
@@ -86,10 +93,12 @@ export default function Login({ navigation }) {
           />
         </View>
 
-        <TouchableOpacity onPress={() => {
-          cadastro();
-        }} 
-        style={styles.button}>
+        <TouchableOpacity
+          onPress={() => {
+            cadastro();
+          }}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
 
@@ -124,20 +133,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   image: {
-    width: 249,
-    height: 159,
+    width: width * 0.6,
+    height: height * 0.2,
+    resizeMode: "contain",
     marginBottom: 20,
   },
   ImageView: {
-    position: "absolute",
-    top: 50,
+    top: height * 0.05,
     padding: 10,
     flexDirection: "row",
     justifyContent: "center",
     paddingHorizontal: 50,
+    width: "100%",
   },
   header: {
-    marginTop: 80,
+    marginTop: height * 0.01,
     marginBottom: 30,
   },
   title: {
@@ -154,10 +164,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "transparent",
-    borderRadius: 20,
+    borderRadius: width * 0.05,
     paddingHorizontal: 15,
     width: "100%",
-    height: 57,
+    height: height * 0.06,
     marginBottom: 15,
     borderColor: "#fff",
     borderWidth: 1,
@@ -174,8 +184,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#FFC400",
-    borderRadius: 20,
-    height: 57,
+    borderRadius: width * 0.05,
+    height: height * 0.06,
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
@@ -208,37 +218,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
-    borderRadius: 20,
+    borderRadius: width * 0.05,
     paddingVertical: 15,
     paddingHorizontal: 20,
     width: "100%",
     justifyContent: "flex-start",
     marginTop: 30,
-    position: "relative",
   },
-
   googleIcon: {
-    width: 30,
-    height: 30,
-    left: 20,
-    marginRight: 62,
+    width: width * 0.08,
+    height: height * 0.03,
+    resizeMode: "contain",
+    marginRight: 20,
   },
-
   googleButtonText: {
     color: "#000",
     fontSize: 16,
     fontWeight: "bold",
   },
   LoginView: {
-    padding: 10,
     flexDirection: "row",
-    justifyContent: "space-around",
-    paddingHorizontal: 50,
-    position: "absolute",
-    right: 46,
-    bottom: 90,
-    flexDirection: "row",
+    marginTop: 30,
+    marginBottom: 20,
+    alignSelf: "flex-start",
+    marginLeft: 30,
   },
+
   LoginText: {
     color: "#fff",
     fontSize: 16,

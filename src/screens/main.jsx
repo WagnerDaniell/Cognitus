@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    marginBottom: 180,
+    marginBottom: 120,
   },
   title: {
     color: "#081D3C",

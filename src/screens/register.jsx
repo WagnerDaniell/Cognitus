@@ -9,11 +9,13 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { Alert } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
-import axios from "axios"
+import { Alert } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import axios from "axios";
 import Loading from "../components/loading";
-
+import { Dimensions } from "react-native";
+import { ScrollView } from "react-native";
+const { width, height } = Dimensions.get("window");
 
 export default function Register({ navigation }) {
   const [nome, setNome] = useState("");
@@ -23,120 +25,128 @@ export default function Register({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   const body = {
-    Name : nome,
-    Email : email,
+    Name: nome,
+    Email: email,
     Password: password,
-    Schooling : escolaridade
+    Schooling: escolaridade,
   };
 
   const cadastro = async () => {
-    try{
+    try {
       setLoading(true);
       const response = await axios.post(
-        "https://cognitusbackend.onrender.com/api/c/register", body, 
+        "https://cognitusbackend.onrender.com/api/c/register",
+        body,
         {
-          headers:{
-            "Content-Type" : "application/json"
-          }
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
-      
-      await SecureStore.setItemAsync('token', response.data.token)
-      navigation.navigate("Home")
 
-    }catch(error){
+      await SecureStore.setItemAsync("token", response.data.token);
+      navigation.navigate("Home");
+    } catch (error) {
       Alert.alert("Error: " + error.response?.data?.message);
-    }
-    finally{
+    } finally {
       setLoading(false);
     }
   };
 
-  if (loading == true){
-    return <Loading/>
+  if (loading == true) {
+    return <Loading />;
   }
 
   return (
     <LinearGradient colors={["#0F2851", "#000000"]} style={styles.container}>
-      <View style={styles.ImageView}>
-        <Image
-          source={require("../assets/LogoNoTxT.png")}
-          style={styles.image}
-        />
-      </View>
-
-      <View style={styles.header}>
-        <Text style={styles.title}>Crie sua Conta</Text>
-      </View>
-
-      <View style={styles.form}>
-        <View style={styles.inputWrapper}>
-          <Ionicons name="person" size={20} style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Nome"
-            placeholderTextColor="#fff"
-            onChangeText={(text) => setNome(text)}
-            value={nome}
-          />
-        </View>
-
-        <View style={styles.inputWrapper}>
-          <Ionicons name="mail" size={20} style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor="#fff"
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-          />
-        </View>
-
-        <View style={styles.inputWrapper}>
-          <Ionicons name="lock-closed" size={20} style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Senha"
-            placeholderTextColor="#fff"
-            secureTextEntry
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-          />
-        </View>
-
-        <View style={styles.inputWrapper}>
-          <Ionicons name="school" size={20} style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Escolaridade"
-            placeholderTextColor="#fff"
-            onChangeText={(text) => setEscolaridade(text)}
-            value={escolaridade}
-          />
-        </View>
-        <TouchableOpacity onPress={() => cadastro()} style={styles.button}>
-          <Text style={styles.buttonText}>CRIAR CONTA</Text>
-        </TouchableOpacity>
-
-        <View style={styles.separatorContainer}>
-          <View style={styles.line} />
-          <Text style={styles.separatorText}>OR</Text>
-          <View style={styles.line} />
-        </View>
-        <TouchableOpacity style={styles.googleButton}>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.ImageView}>
           <Image
-            source={require("../assets/google.png")}
-            style={styles.googleIcon}
+            source={require("../assets/LogoNoTxT.png")}
+            style={styles.image}
           />
-          <Text style={styles.googleButtonText}>Entre com o Google</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.LoginView}>
-        <Text style={styles.LoginText}>Já tem uma conta?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Index")}>
-          <Text style={styles.LoginText2}> Entrar</Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+
+        <View style={styles.header}>
+          <Text style={styles.title}>Crie sua Conta</Text>
+        </View>
+
+        <View style={styles.form}>
+          <View style={styles.inputWrapper}>
+            <Ionicons name="person" size={20} style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Nome"
+              placeholderTextColor="#fff"
+              onChangeText={(text) => setNome(text)}
+              value={nome}
+            />
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <Ionicons name="mail" size={20} style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              placeholderTextColor="#fff"
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+            />
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <Ionicons name="lock-closed" size={20} style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Senha"
+              placeholderTextColor="#fff"
+              secureTextEntry
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+            />
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <Ionicons name="school" size={20} style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Escolaridade"
+              placeholderTextColor="#fff"
+              onChangeText={(text) => setEscolaridade(text)}
+              value={escolaridade}
+            />
+          </View>
+          <TouchableOpacity onPress={() => cadastro()} style={styles.button}>
+            <Text style={styles.buttonText}>CRIAR CONTA</Text>
+          </TouchableOpacity>
+
+          <View style={styles.separatorContainer}>
+            <View style={styles.line} />
+            <Text style={styles.separatorText}>OR</Text>
+            <View style={styles.line} />
+          </View>
+          <TouchableOpacity style={styles.googleButton}>
+            <Image
+              source={require("../assets/google.png")}
+              style={styles.googleIcon}
+            />
+            <Text style={styles.googleButtonText}>Entre com o Google</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.LoginView}>
+          <Text style={styles.LoginText}>Já tem uma conta?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Index")}>
+            <Text style={styles.LoginText2}> Entrar</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </LinearGradient>
   );
 }
@@ -149,20 +159,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   image: {
-    width: 249,
-    height: 159,
+    width: width * 0.6,
+    height: height * 0.2,
+    resizeMode: "contain",
     marginBottom: 20,
   },
   ImageView: {
-    position: "absolute",
-    top: 50,
+    top: height * 0.05,
     padding: 10,
     flexDirection: "row",
     justifyContent: "center",
     paddingHorizontal: 50,
+    width: "100%",
   },
   header: {
-    marginTop: 170,
+    marginTop: height * 0.01,
     marginBottom: 30,
   },
   title: {
@@ -182,7 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 15,
     width: "100%",
-    height: 57,
+    height: height * 0.06,
     marginBottom: 15,
     borderColor: "#fff",
     borderWidth: 1,
@@ -200,7 +211,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#FFC400",
     borderRadius: 20,
-    height: 57,
+    height: height * 0.06,
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
@@ -243,10 +254,10 @@ const styles = StyleSheet.create({
   },
 
   googleIcon: {
-    width: 30,
-    height: 30,
-    left: 20,
-    marginRight: 62,
+    width: width * 0.08,
+    height: height * 0.03,
+    resizeMode: "contain",
+    marginRight: 20,
   },
 
   googleButtonText: {
@@ -255,14 +266,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   LoginView: {
-    padding: 10,
     flexDirection: "row",
-    justifyContent: "space-around",
-    paddingHorizontal: 50,
-    position: "absolute",
-    right: 140,
-    bottom: 10,
-    flexDirection: "row",
+    marginTop: 30,
+    marginBottom: 20,
+    alignSelf: "flex-start",
+    marginLeft: 30,
   },
   LoginText: {
     color: "#fff",
